@@ -247,42 +247,42 @@ namespace Univariate_distributions.Models
 			return MathNet.Numerics.Distributions.Normal.InvCDF(mean, stddev, p);
 		}
 
-        private static bool PolarTransform(double a, double b, out double x, out double y)
-        {
-            double num = 2.0 * a - 1.0;
-            double num2 = 2.0 * b - 1.0;
-            double num3 = num * num + num2 * num2;
-            if (num3 >= 1.0 || num3 == 0.0)
-            {
-                x = 0.0;
-                y = 0.0;
-                return false;
-            }
+		private static bool PolarTransform(double a, double b, out double x, out double y)
+		{
+			double num = 2.0 * a - 1.0;
+			double num2 = 2.0 * b - 1.0;
+			double num3 = num * num + num2 * num2;
+			if (num3 >= 1.0 || num3 == 0.0)
+			{
+				x = 0.0;
+				y = 0.0;
+				return false;
+			}
 
-            double num4 = Math.Sqrt(-2.0 * Math.Log(num3) / num3);
-            x = num * num4;
-            y = num2 * num4;
-            return true;
-        }
+			double num4 = Math.Sqrt(-2.0 * Math.Log(num3) / num3);
+			x = num * num4;
+			y = num2 * num4;
+			return true;
+		}
 
-        /// <summary>
-        /// Создаёт случайное значение нормального распределения.
-        /// </summary>
-        /// <param name="mean">Математическое ожидаение (μ) распределения.</param>
-        /// <param name="stddev">Среднее квадратичное отклонение (σ). Диапозон: σ ≥ 0.</param>
-        /// <returns>случайное значение нормального распределения.</returns>
-        /// <exception cref="ArgumentException">Если квадратичное отклонение (σ) < 0.</exception>
-        public static double Sample(double mean, double stddev)
+		/// <summary>
+		/// Создаёт случайное значение нормального распределения.
+		/// </summary>
+		/// <param name="mean">Математическое ожидаение (μ) распределения.</param>
+		/// <param name="stddev">Среднее квадратичное отклонение (σ). Диапозон: σ ≥ 0.</param>
+		/// <returns>случайное значение нормального распределения.</returns>
+		/// <exception cref="ArgumentException">Если квадратичное отклонение (σ) < 0.</exception>
+		public static double Sample(double mean, double stddev)
 		{
 			var rnd = new Random();
 
-            double x;
-            double y;
-            while (!PolarTransform(rnd.NextDouble(), rnd.NextDouble(), out x, out y))
-            {
-            }
+			double x;
+			double y;
+			while (!PolarTransform(rnd.NextDouble(), rnd.NextDouble(), out x, out y))
+			{
+			}
 
-            return mean + stddev * x;
+			return mean + stddev * x;
 		}
 
 		/// <summary>
@@ -318,14 +318,14 @@ namespace Univariate_distributions.Models
 			Samples(_mean, _stdDev, values);
 		}
 
-        /// <summary>
-        /// Создаёт выборку случайных значений нормального распределения с заданными параметрами.
-        /// </summary>
-        /// <param name="mean">Математическое ожидаение (μ) распределения.</param>
-        /// <param name="stddev">Среднее квадратичное отклонение (σ). Диапозон: σ ≥ 0.</param>
-        /// <param name="count">Количество случайных величин.</param>
-        /// <returns>выборка случайных значений нормального распределения.</returns>
-        public static double[] Samples(double mean, double stddev, int count)
+		/// <summary>
+		/// Создаёт выборку случайных значений нормального распределения с заданными параметрами.
+		/// </summary>
+		/// <param name="mean">Математическое ожидаение (μ) распределения.</param>
+		/// <param name="stddev">Среднее квадратичное отклонение (σ). Диапозон: σ ≥ 0.</param>
+		/// <param name="count">Количество случайных величин.</param>
+		/// <returns>выборка случайных значений нормального распределения.</returns>
+		public static double[] Samples(double mean, double stddev, int count)
 		{
 			var result = new double[count];
 			Samples(mean, stddev, result);
@@ -333,12 +333,12 @@ namespace Univariate_distributions.Models
 			return result;
 		}
 
-        /// <summary>
-        /// Создаёт выборку случайных значений нормального распределения с заданными параметрами.
-        /// </summary>
-        /// <param name="count">Количество случайных величин.</param>
-        /// <returns>выборка случайных значений нормального распределения.</returns>
-        public double[] Samples(int count)
+		/// <summary>
+		/// Создаёт выборку случайных значений нормального распределения с заданными параметрами.
+		/// </summary>
+		/// <param name="count">Количество случайных величин.</param>
+		/// <returns>выборка случайных значений нормального распределения.</returns>
+		public double[] Samples(int count)
 		{
 			return Samples(_mean, _stdDev, count);
 		}
@@ -361,45 +361,45 @@ namespace Univariate_distributions.Models
 			return (lower, upper);
 		}
 
-        /// <summary>
-        /// Вычисляет доверительный интервал среднеквадратичного отклонения экспоненциального распределения.
-        /// </summary>
-        /// <param name="samples">Значения экспоненциального распределения.</param>
-        /// <param name="p">Вероятность (p) в допустимом диапозоне. Диапозон: 0 ≤ p ≤ 1.</param>
+		/// <summary>
+		/// Вычисляет доверительный интервал среднеквадратичного отклонения экспоненциального распределения.
+		/// </summary>
+		/// <param name="samples">Значения экспоненциального распределения.</param>
+		/// <param name="p">Вероятность (p) в допустимом диапозоне. Диапозон: 0 ≤ p ≤ 1.</param>
 		/// <remarks>MATLAB: expfit</remarks>
-        /// <returns>доверительный интервал среднеквадратичного отклонения экспоненциального распределения.</returns>
-        public static (double lower, double upper) Estemate2(IEnumerable<double> samples, double p)
+		/// <returns>доверительный интервал среднеквадратичного отклонения экспоненциального распределения.</returns>
+		public static (double lower, double upper) Estemate2(IEnumerable<double> samples, double p)
 		{
 			double S = PointEstemate2(samples);
 
-            double lower = S * Math.Sqrt(samples.Count() / ChiSquared.InvCDF(samples.Count() - 1, p / 2));
+			double lower = S * Math.Sqrt(samples.Count() / ChiSquared.InvCDF(samples.Count() - 1, p / 2));
 			double upper = S * Math.Sqrt(samples.Count() / ChiSquared.InvCDF(samples.Count() - 1, (1 - p) / 2));
 
 			return (lower, upper);
-        }
+		}
 
-        /// <summary>
-        /// Вычисляет точечную оценку математического ожидания нормального распределения.
-        /// </summary>
-        /// <param name="samples">Значения экспоненциального распределения.</param>
+		/// <summary>
+		/// Вычисляет точечную оценку математического ожидания нормального распределения.
+		/// </summary>
+		/// <param name="samples">Значения экспоненциального распределения.</param>
 		/// <remarks>MATLAB: muhat</remarks>
-        /// <returns>точечная оценка математического ожидания нормального распределения.</returns>
-        public static double PointEstemate1(IEnumerable<double> samples)
+		/// <returns>точечная оценка математического ожидания нормального распределения.</returns>
+		public static double PointEstemate1(IEnumerable<double> samples)
 		{
 			return samples.Average();
 		}
 
-        /// <summary>
-        /// Вычисляет точечную оценку среднеквадратичного отклонения нормального распределения.
-        /// </summary>
-        /// <param name="samples">Значения экспоненциального распределения.</param>
+		/// <summary>
+		/// Вычисляет точечную оценку среднеквадратичного отклонения нормального распределения.
+		/// </summary>
+		/// <param name="samples">Значения экспоненциального распределения.</param>
 		/// <remarks>MATLAB: sigmahat</remarks>
-        /// <returns>точечная оценка среднеквадратичного отклонения нормального распределения.</returns>
-        public static double PointEstemate2(IEnumerable<double> samples)
+		/// <returns>точечная оценка среднеквадратичного отклонения нормального распределения.</returns>
+		public static double PointEstemate2(IEnumerable<double> samples)
 		{
 			var mean = PointEstemate1(samples);
 
-            return Math.Sqrt(samples.Sum(x =>  (x - mean) * (x - mean)) / (samples.Count() - 1));
+			return Math.Sqrt(samples.Sum(x => (x - mean) * (x - mean)) / (samples.Count() - 1));
 		}
 	}
 }

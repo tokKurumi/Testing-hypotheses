@@ -3,7 +3,7 @@ using Modeling_sample.Distributions.Interfaces;
 
 namespace Univariate_distributions.Models
 {
-    class Poisson : IDiscreteDistribution, IUnivariateDistribution, IDistribution
+	class Poisson : IDiscreteDistribution, IUnivariateDistribution, IDistribution
 	{
 		private System.Random _random;
 

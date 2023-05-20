@@ -224,6 +224,13 @@ namespace Univariate_distributions.Models
 			return result;
 		}
 
+		/// <summary>
+		/// Проверяет заданные значения на нормальность распределения по тесту Харке-Бера.
+		/// </summary>
+		/// <param name="values">Значения для проверки.</param>
+		/// <param name="alpha">Необходимый уровень значимости.</param>
+		/// <returns>возращает результат прохождения теста, значение выборочной статистики и критическое значение статистики Хи-квадрата.</returns>
+		/// <remarks>MATLAB: JBSTAT</remarks>
 		public static (bool result, double JBSTAT, double kv) HarkeBer(IEnumerable<double> values, double alpha)
 		{
 			var averenge = values.Average();
@@ -236,18 +243,16 @@ namespace Univariate_distributions.Models
 			return (JBSTAT < kv, JBSTAT, kv);
 		}
 
-		public enum Distribution
+		/// <summary>
+		/// Создаёт группированный статистический ряд для выборки.
+		/// </summary>
+		/// <param name="samples">Выборка для группировки.</param>
+		/// <returns>группированный статистический ряд для выборки.</returns>
+		public static List<GroupRow> GroupValues(IEnumerable<double> samples)
 		{
-			Binomial,
-			Exponentional,
-			Normal
-		}
-
-		public static List<GroupRow> GroupValues(IEnumerable<double> observed)
-		{
-			var min = observed.Min();
-			var max = observed.Max();
-			var stepsCount = Convert.ToInt16(1 + 3.32 * Math.Log10(observed.Count()));
+			var min = samples.Min();
+			var max = samples.Max();
+			var stepsCount = Convert.ToInt16(1 + 3.32 * Math.Log10(samples.Count()));
 			var step = (max - min) / stepsCount;
 
 			var result = new List<GroupRow>();
@@ -255,9 +260,9 @@ namespace Univariate_distributions.Models
 			{
 				var BottomLine = min + step * i;
 				var TopLine = BottomLine + step;
-				var Frequency = observed.Count(x => (x >= min + step * i) && (x < min + step * (i + 1)));
+				var Frequency = samples.Count(x => (x >= min + step * i) && (x < min + step * (i + 1)));
 				var AccumulatedFrequency = result.Select(x => x.Frequency).Sum() + Frequency;
-				var RelativeFrequency = (double)Frequency / observed.Count();
+				var RelativeFrequency = (double)Frequency / samples.Count();
 				var RelativeCumulativeFrequency = result.Select(x => x.RelativeFrequency).Sum() + RelativeFrequency;
 
 				result.Add(new GroupRow(
@@ -273,6 +278,13 @@ namespace Univariate_distributions.Models
 			return result;
 		}
 
+		/// <summary>
+		/// Проверяет заданные значения выборки на нужный закон распределения.
+		/// </summary>
+		/// <param name="distribution">Закон распределения.</param>
+		/// <param name="observed">Выборка для проверки</param>
+		/// <returns>уровень соответствия выборки определённому закону распределения.</returns>
+		/// <remarks>MATLAB: chi2gof?</remarks>
 		public static double ChiSquaredTest(IUnivariateDistribution distribution, IEnumerable<double> observed)
 		{
 			var gropedList = GroupValues(observed);
@@ -280,86 +292,14 @@ namespace Univariate_distributions.Models
 			var theoretical_frequencies = new List<double>();
 			for (int i = 0; i < gropedList.Count; i++)
 			{
-				theoretical_frequencies.Add(distribution switch
-				{
-					IDiscreteDistribution => observed.Count() * (distribution.CumulativeDistribution(gropedList[i].TopLine) - distribution.CumulativeDistribution(gropedList[i].BottomLine)),
-					IContinuousDistribution => observed.Count() * (distribution.CumulativeDistribution(gropedList[i].TopLine) - distribution.CumulativeDistribution(gropedList[i].BottomLine)),
-					_ => throw new ArgumentOutOfRangeException(nameof(distribution), $"Not expected direction value: {distribution}"),
-				});
+				theoretical_frequencies.Add
+				(
+					distribution.CumulativeDistribution(observed.Count() * (distribution.CumulativeDistribution(gropedList[i].TopLine) - distribution.CumulativeDistribution(gropedList[i].BottomLine)))
+				);
 			}
 
 			return gropedList.Zip(theoretical_frequencies)
 				.Sum(zipedElem => (zipedElem.First.Frequency - zipedElem.Second) * (zipedElem.First.Frequency - zipedElem.Second) / zipedElem.Second);
 		}
-
-		//public static double ChiSquaredTest(IEnumerable<double> observed, Distribution distribution)
-		//{
-		//	var min = observed.Min();
-		//	var max = observed.Max();
-		//	var stepsCount = Convert.ToInt16(1 + 3.32 * Math.Log10(observed.Count()));
-		//	var step = (max - min) / stepsCount;
-
-		//	var w = max - min;
-		//	var b = w / stepsCount;
-
-		//	var groupRows = new List<GroupRow>();
-		//	var theoretical_frequencies = new List<double>();
-		//	for (int i = 0; i < stepsCount; i++)
-		//	{
-		//		var BottomLine = min + step * i;
-		//		var TopLine = BottomLine + step;
-		//		var Frequency = observed.Count(x => (x >= min + step * i) && (x < min + step * (i + 1)));
-		//		var AccumulatedFrequency = groupRows.Select(x => x.Frequency).Sum() + Frequency;
-		//		var RelativeFrequency = (double)Frequency / observed.Count();
-		//		var RelativeCumulativeFrequency = groupRows.Select(x => x.RelativeFrequency).Sum() + RelativeFrequency;
-
-		//		groupRows.Add(new GroupRow(
-		//			BottomLine,
-		//			TopLine,
-		//			Frequency,
-		//			AccumulatedFrequency,
-		//			RelativeFrequency,
-		//			RelativeCumulativeFrequency)
-		//		);
-
-
-		//		switch (distribution)
-		//		{
-		//			case Distribution.Binomial:
-		//				{
-		//					var temp1 = Binomial.CDF(Program.P_FOR_BINO, )
-		//					break;
-		//				}
-
-		//			case Distribution.Exponentional:
-		//				{
-		//					var a_zv = (observed.Count() - 1) / observed.Sum();
-		//					var temp1 = Exponential.CDF(a_zv, BottomLine);
-		//					var temp2 = Exponential.CDF(a_zv, TopLine);
-
-		//					theoretical_frequencies.Add(observed.Count() * (temp2 - temp1));
-		//					break;
-		//				}
-
-		//			case Distribution.Normal:
-		//				{
-
-		//					break;
-		//				}
-		//		}
-
-		//	}
-		//	//dynamic cdf = distribution switch
-		//	//{
-		//	//	Distribution.Binomial => Binomial.CDF,
-		//	//	Distribution.Exponentional => Exponential.CDF,
-		//	//	Distribution.Normal => Normal.CDF
-		//	//};
-
-
-
-		//	//var expected = ChiSquared.Samples()
-		//	//return observed.Zip(expected).Sum(elem => (elem.First - elem.Second) * (elem.First - elem.Second) / elem.Second);
-		//}
 	}
 }

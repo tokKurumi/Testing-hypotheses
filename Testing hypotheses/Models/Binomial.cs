@@ -321,14 +321,14 @@ namespace Univariate_distributions.Models
 			});
 		}
 
-        /// <summary>
-        /// Создаёт выборку случайных значений биномиального распределения с заданными параметрами.
-        /// </summary>
-        /// <param name="p">Вероятность (p) в допустимом диапозоне. Диапозон: 0 ≤ p ≤ 1.</param>
+		/// <summary>
+		/// Создаёт выборку случайных значений биномиального распределения с заданными параметрами.
+		/// </summary>
+		/// <param name="p">Вероятность (p) в допустимом диапозоне. Диапозон: 0 ≤ p ≤ 1.</param>
 		/// <param name="n">Количество испытаний (n). Диапозон: n ≥ 0.</param>
-        /// <param name="count">Количество генерируемых значений.</param>
-        /// <returns>выборка случайных значений биномиального распределения.</returns>
-        public static int[] Samples(double p, int n, int count)
+		/// <param name="count">Количество генерируемых значений.</param>
+		/// <returns>выборка случайных значений биномиального распределения.</returns>
+		public static int[] Samples(double p, int n, int count)
 		{
 			var result = new int[count];
 			Samples(p, n, result);
@@ -336,12 +336,12 @@ namespace Univariate_distributions.Models
 			return result;
 		}
 
-        /// <summary>
-        /// Создаёт выборку случайных значений биномиального распределения с заданными параметрами.
-        /// </summary>
-        /// <param name="count">Количество генерируемых значений.</param>
-        /// <returns>выборка случайных значений биномиального распределения.</returns>
-        public int[] Samples(int count)
+		/// <summary>
+		/// Создаёт выборку случайных значений биномиального распределения с заданными параметрами.
+		/// </summary>
+		/// <param name="count">Количество генерируемых значений.</param>
+		/// <returns>выборка случайных значений биномиального распределения.</returns>
+		public int[] Samples(int count)
 		{
 			return Samples(_p, _trials, count);
 		}
@@ -358,45 +358,45 @@ namespace Univariate_distributions.Models
 		{
 			double h = PointEstemate(samples, n);
 
-            double lower = h + Normal.InvCDF(0, 1, p / 2) * Math.Sqrt(h * (1 - h) / n);
+			double lower = h + Normal.InvCDF(0, 1, p / 2) * Math.Sqrt(h * (1 - h) / n);
 			double upper = h - Normal.InvCDF(0, 1, p / 2) * Math.Sqrt(h * (1 - h) / n);
 
 			return (lower, upper);
 		}
 
-        /// <summary>
-        /// Вычисляет точечную оценку биномиального распределения.
-        /// </summary>
-        /// <param name="samples">Значения биномиального распределения.</param>
-        /// <param name="n">Количество испытаний (n). Диапозон: n ≥ 0.</param>
-        /// <returns>точечная оценка биномиального распределения.</returns>
-        /// <remarks>MATLAB: binofit</remarks>
-        public static double PointEstemate(IEnumerable<int> samples, int n)
-        {
+		/// <summary>
+		/// Вычисляет точечную оценку биномиального распределения.
+		/// </summary>
+		/// <param name="samples">Значения биномиального распределения.</param>
+		/// <param name="n">Количество испытаний (n). Диапозон: n ≥ 0.</param>
+		/// <returns>точечная оценка биномиального распределения.</returns>
+		/// <remarks>MATLAB: binofit</remarks>
+		public static double PointEstemate(IEnumerable<int> samples, int n)
+		{
 			return samples.Average() / n;
-        }
+		}
 
-        /// <summary>
-        /// Вычисляет доверительный интервал биномиального распределения.
-        /// </summary>
-        /// <param name="samples">Значения биномиального распределения.</param>
-        /// <returns>доверительный интервал биномиального распределения.</returns>
-        /// <remarks>MATLAB: binofit</remarks>
-        public (double lower, double upper) Estemate(IEnumerable<int> samples)
+		/// <summary>
+		/// Вычисляет доверительный интервал биномиального распределения.
+		/// </summary>
+		/// <param name="samples">Значения биномиального распределения.</param>
+		/// <returns>доверительный интервал биномиального распределения.</returns>
+		/// <remarks>MATLAB: binofit</remarks>
+		public (double lower, double upper) Estemate(IEnumerable<int> samples)
 		{
 			return Estemate(samples, _p, _trials);
 		}
 
-        /// <summary>
-        /// Вычисляет точечную оценку биномиального распределения.
-        /// </summary>
-        /// <param name="samples">Значения биномиального распределения.</param>
-        /// <param name="n">Количество испытаний (n). Диапозон: n ≥ 0.</param>
-        /// <returns>точечная оценка биномиального распределения.</returns>
-        /// <remarks>MATLAB: binofit</remarks>
-        public double PointEstemate(IEnumerable<int> samples)
-        {
+		/// <summary>
+		/// Вычисляет точечную оценку биномиального распределения.
+		/// </summary>
+		/// <param name="samples">Значения биномиального распределения.</param>
+		/// <param name="n">Количество испытаний (n). Диапозон: n ≥ 0.</param>
+		/// <returns>точечная оценка биномиального распределения.</returns>
+		/// <remarks>MATLAB: binofit</remarks>
+		public double PointEstemate(IEnumerable<int> samples)
+		{
 			return PointEstemate(samples, _trials);
-        }
-    }
+		}
+	}
 }

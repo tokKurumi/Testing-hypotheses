@@ -267,13 +267,13 @@ namespace Univariate_distributions.Models
 			});
 		}
 
-        /// <summary>
-        /// Создаёт выборку случайных значений экспоненциального распределения с заданными параметрами.
-        /// </summary>
+		/// <summary>
+		/// Создаёт выборку случайных значений экспоненциального распределения с заданными параметрами.
+		/// </summary>
 		/// <param name="rate">Скорость распределения (λ). Диапозон: λ ≥ 0.</param>
-        /// <param name="count">Количество случайных величин.</param>
-        /// <returns>выборка случайных значений экспоненциального распределения.</returns>
-        public static double[] Samples(double rate, int count) 
+		/// <param name="count">Количество случайных величин.</param>
+		/// <returns>выборка случайных значений экспоненциального распределения.</returns>
+		public static double[] Samples(double rate, int count)
 		{
 			var results = new double[count];
 			Samples(rate, results);
@@ -281,12 +281,12 @@ namespace Univariate_distributions.Models
 			return results;
 		}
 
-        /// <summary>
-        /// Создаёт выборку случайных значений экспоненциального распределения с заданными параметрами.
-        /// </summary>
-        /// <param name="count">Количество случайных величин.</param>
-        /// <returns>выборка случайных значений экспоненциального распределения.</returns>
-        public double[] Samples(int count)
+		/// <summary>
+		/// Создаёт выборку случайных значений экспоненциального распределения с заданными параметрами.
+		/// </summary>
+		/// <param name="count">Количество случайных величин.</param>
+		/// <returns>выборка случайных значений экспоненциального распределения.</returns>
+		public double[] Samples(int count)
 		{
 			return Samples(_rate, count);
 		}
@@ -302,7 +302,7 @@ namespace Univariate_distributions.Models
 		{
 			double h = PointEstemate(samples);
 
-            double lower = h * ChiSquared.InvCDF(2 * samples.Count(), p / 2) / (2 * (samples.Count() - 1));
+			double lower = h * ChiSquared.InvCDF(2 * samples.Count(), p / 2) / (2 * (samples.Count() - 1));
 			double upper = h * ChiSquared.InvCDF(2 * samples.Count(), (2 - p) / 2) / (2 * (samples.Count() - 1));
 
 			return (lower, upper);

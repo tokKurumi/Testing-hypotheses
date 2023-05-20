@@ -3,7 +3,7 @@ using Modeling_sample.Distributions.Interfaces;
 
 namespace Univariate_distributions.Models
 {
-    class ContinuousUniform : IContinuousDistribution, IUnivariateDistribution, IDistribution
+	class ContinuousUniform : IContinuousDistribution, IUnivariateDistribution, IDistribution
 	{
 		private System.Random _random;
 

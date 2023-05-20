@@ -6,7 +6,7 @@ using Modeling_sample.Distributions.Interfaces;
 
 namespace Univariate_distributions.Models
 {
-    public class FisherSnedecor : IContinuousDistribution, IUnivariateDistribution, IDistribution
+	public class FisherSnedecor : IContinuousDistribution, IUnivariateDistribution, IDistribution
 	{
 		private System.Random _random;
 
