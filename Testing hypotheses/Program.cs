@@ -14,17 +14,17 @@ public class Program
 		}; // matlab chisquare
 		var binomialValues = Binomial.Samples(0.5, 30, 50).Select(item => (double)item);
 		var exponentionalValues = Exponential.Samples(0.5, 50);
-		var normalValues = Normal.Samples(10, 1, 50);
+		var normalValues = Normal.Samples(46, 21, 250);
 
 		//Задание 1
 		Console.WriteLine(HarkeBer(normalValues, 0.95));
 
 		//Задание 2
-		var freedom = GroupValues(normalValues).Count - 2;
+		var freedom = GroupValues(exponentionalValues).Count - 3;
 		//var distribution = new ChiSquared(5);
 		//var distribution = new Binomial(0.5, 30);
 		//var distribution = new Exponential(0.5);
-		var distribution = new Normal(10, 1);
+		var distribution = new Normal(46, 21);
 		Console.WriteLine($"{ChiSquaredTest(distribution, normalValues)} и {ChiSquared.InvCDF(freedom, 0.95)}");
 	}
 }

@@ -294,7 +294,7 @@ namespace Univariate_distributions.Models
 			{
 				theoretical_frequencies.Add
 				(
-					distribution.CumulativeDistribution(observed.Count() * (distribution.CumulativeDistribution(gropedList[i].TopLine) - distribution.CumulativeDistribution(gropedList[i].BottomLine)))
+					observed.Count() * (distribution.CumulativeDistribution(gropedList[i].TopLine) - distribution.CumulativeDistribution(gropedList[i].BottomLine))
 				);
 			}
 

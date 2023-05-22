@@ -1,5 +1,4 @@
-﻿using MathNet.Numerics.Statistics;
-using Modeling_sample.Distributions.Interfaces;
+﻿using Modeling_sample.Distributions.Interfaces;
 using System.Runtime.CompilerServices;
 
 namespace Univariate_distributions.Models
